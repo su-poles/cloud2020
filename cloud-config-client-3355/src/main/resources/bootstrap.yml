@@ -1,0 +1,33 @@
+server:
+  port: 3355
+
+spring:
+  application:
+    name: config-client
+  cloud:
+    # config客户端配置
+    config:
+      label: master        # 读取分支
+      name: config          # 配置文件名称
+      profile: dev          # 环境变量， 由此确定读取配置文件为：{label}分支上{name}-{profile}.yml, 即：http://localhost:3344/master/config-dev.yml
+      uri: http://localhost:3344  # 配置中心地址
+  rabbitmq:                # rabbitmq相关配置，用以支持消息总线bus
+    host: rabbitmq.dev.sina-shangke.com
+    port: 5672
+    username: shangke
+    password: Shangke098^&*
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+
+# 暴露监控端点， 为了能够访问：curl -X POST "http://localhost:3355/actuator/refresh"
+management:
+  endpoints:
+    web:
+      exposure:
+        # 这里的*可以有多个值，比如health等, 我们需要访问post请求：refresh来手动刷新配置，对应@refreshScope注解
+        # curl -X POST "http://localhost:3355/actuator/refresh"
+        include: "*"

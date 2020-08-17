@@ -5,3 +5,28 @@ spring:
   application:
     name: cloud-config-center
   cloud:
+    config:
+      server:
+        git:
+          uri: git@github.com:su-poles/springcloud-config.git
+          search-paths:    # 搜索目录, 即指定配置文件所在的目录
+            - springcloud-config
+      label: master        # 读取分支
+  rabbitmq:                # rabbitmq相关配置，用以支持消息总线bus
+    host: rabbitmq.dev.sina-shangke.com
+    port: 5672
+    username: shangke
+    password: Shangke098^&*
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+
+
+# 暴露bus刷新配置的断点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'bus-refresh'
