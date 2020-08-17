@@ -1,0 +1,28 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: cloud-hystrix-order-service
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:7001/eureka/
+
+
+#ribbon:
+#  ReadTimeout: 5000
+#  ConnectTimeout: 5000
+
+logging:
+  level:
+    # feign日志配置，设置哪个接口需要打印日志，并指定日志级别
+    com.poles.springcloud.service.PaymentHystrixService: debug
+
+#启用服务降级
+feign:
+  hystrix:
+    enabled: true

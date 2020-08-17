@@ -1,0 +1,15 @@
+server:
+  port: 8006
+
+spring:
+  application:
+    name: cloud-consul-provider-payment
+
+  ##consule注册中心
+  cloud:
+    consul:
+#      host: vbsos
+      host: 10.222.139.92
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}

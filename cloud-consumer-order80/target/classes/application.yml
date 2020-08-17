@@ -1,0 +1,19 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: cloud-order-service
+
+eureka:
+  client:
+    # true表示向注册中心注册自己
+    register-with-eureka: true
+    # true 表示需要去注册中心检索那些已经注册了的服务, 默认为true. 集群必须设置为true, 才能配合ribbon使用负载均衡
+    fetch-registry: true
+    service-url:
+      #Eureka注册地址
+      #单机版
+      #defaultZone: http://localhost:7001/eureka/
+      #进群版
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/

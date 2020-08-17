@@ -1,0 +1,77 @@
+server:
+  port: 9527
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/
+  instance:
+    hostname: cloud-gateway-service
+
+spring:
+  application:
+    name: cloud-geteway
+  #配置网关， 参考GateWayConfig类中的注释, 官网文档：https://docs.spring.io/spring-cloud-gateway/docs/2.2.4.RELEASE/reference/html/
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true                             # 开启从注册中心动态创建路由的功能，利用微服务名进行路由分配
+      routes:                                       # 路由配置，多个路由
+        - id: payment_routh                         # 路由ID，要求唯一，建议配合服务名
+          #uri: http://localhost:8001                # 路由匹配后提供服务的路由地址
+          uri: lb://CLOUD-PAYMENT-SERVICE           # 不指定具体的8001，而是指定注册中心中注册的服务名称，通过服务名称找到服务（才能使用负载均衡功能）
+          predicates:
+            - Path=/payment/get/**                  # 断言，路由匹配的条件
+        - id: payment_routh2
+          #uri: http://localhost:8001
+          uri: lb://CLOUD-PAYMENT-SERVICE
+          predicates:
+            #Path匹配
+            - Path=/payment/lb/**
+            #时间匹配
+#            - After=2020-08-14T17:34:26.304+08:00[Asia/Shanghai]    # 访问时间在该时间之后，lb接口访问才有效果
+#            - Before=2020-08-15T17:34:26.304+08:00[Asia/Shanghai]   # 该时间之前访问才有效
+#            - Between=2020-08-14T17:34:26.304+08:00[Asia/Shanghai],2020-08-15T17:34:26.304+08:00[Asia/Shanghai]  # 该时间范围内访问有效，否则404
+
+            # 表示cookie中包含chocolate，其值匹配正则"ch.p"。 chocolate为字段名，ch.p是个是个正则表达式
+            # curl http://localhost:9527/payment/lb --cookie "chocolate=chap"    //配置了ch.p，返回正常
+            # curl http://localhost:9527/payment/lb --cookie "chocolate=chp"     //返回404
+#            - Cookie=chocolate,ch.p
+
+            #跟Cookie一样，，第一个时属性名，第二个是正则表达式，只有符合正则表达式才能正方访问，否则返回404
+            # curl  http://localhost:9527/payment/lb -H "X-Request-Id:14159265"   #正常访问
+            # curl  http://localhost:9527/payment/lb -H "X-Request-Id:-1"         #404
+#            - Header=X-Request-Id, \d+
+
+            #只有Host指定的域名才能正常方法
+            # curl http://localhost:9527/payment/lb -H "Host: www.poles.pub"    # 正常访问
+#            - Host=**.somehost.org,**.anotherhost.org
+#            - Method=GET
+            # Query为访问参数条件匹配，下面示例表示请求参数中name必须是一个正整数, 这里的query就是url后带的参数，post参数貌似不起作用
+            # curl  http://localhost:9527/payment/lb?name=123456    #正常访问
+            # curl  http://localhost:9527/payment/lb                  #404
+            # curl  http://localhost:9527/payment/lb -d "name=张三"    #404
+
+#            - Query=name, \d+
+            #配置过滤器，过滤器分单一过滤器和全局过滤器，分别为30种和11种，共41中，去官网看吧，下面配置一种，然后研究一下自定义过滤器
+          filters:   #https://docs.spring.io/spring-cloud-gateway/docs/2.2.4.RELEASE/reference/html/#gatewayfilter-factories
+            - AddRequestParameter=randint,1024            #对routes中匹配的URL中，增加请求参数：randint=1024
+
+#            - AddRequestHeader=Host,www.vbsos.com         #对routes中匹配的URL中，增加请求头：Host: www.vbsos.com
+
+#            - AddResponseHeader=X-Response-Red, Blue
+
+#            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
+#            - Hystrix=myCommandName
+
+#            - name: Hystrix
+#                args:
+#                  name: fallbackcmd
+#                  fallbackUri: forward:/incaseoffailureusethis
+#            - RewritePath=/consumingserviceendpoint, /backingserviceendpoint
+
+#            。。。

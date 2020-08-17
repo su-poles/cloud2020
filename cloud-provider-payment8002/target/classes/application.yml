@@ -1,0 +1,40 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: cloud-payment-service
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.gjt.mm.mysql.Driver
+    url: jdbc:mysql://poles:3306/db2020?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: appuser
+    password: Appuser@2018
+    #使用utf8mb4连接数据
+    #hikari:
+    #  connection-init-sql: set names utf8mb4
+    #tomcat:
+    #  initSQL: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci     #根据springboot的不同版本选择使用相应的配置
+    #  init-s-q-l: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci  #根据springboot的不同版本选择使用相应的配置
+    druid:
+      connection-init-sqls: set names utf8mb4
+
+eureka:
+  client:
+    # true表示向注册中心注册自己
+    register-with-eureka: true
+    # true 表示需要去注册中心检索那些已经注册了的服务, 默认为true. 集群必须设置为true, 才能配合ribbon使用负载均衡
+    fetch-registry: true
+    service-url:
+      #Eureka注册地址
+      #单机版
+      defaultZone: http://localhost:7001/eureka/
+#      defaultZone: http://eu reka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+  instance:
+    instance-id: payment8002
+    #在Eureka里鼠标悬停在instance-id上是，会显示主机名和端口，机器多的时候方便查看
+    prefer-ip-address: true
+
+mybatis:
+  mapperLocations: classpath:mapper/*.xml
+  type-aliases-package: com.poles.springcloud.entities         # 所有Entity别名类所在包
