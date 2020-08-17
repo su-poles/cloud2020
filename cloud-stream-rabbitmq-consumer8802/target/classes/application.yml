@@ -1,0 +1,46 @@
+server:
+  port: 8802
+
+spring:
+  application:
+    name: cloud-stream-consumer
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: studyExchange   # 定一个交换机名称，即MQ的Exchange
+          content-type: application/json  #设置消息类型，本次为json, 文本则设置为"text/plain"
+          binder: dev_rabbit           # 指定是哪个一个binder，即上面定义的dev_rabbit
+
+      # 定义一个binder名称，在bingdings中要引用
+      binders:
+        dev_rabbit:
+          type: rabbit    #组件类型，可以rabbit或者kafka
+          environment:
+            spring:
+              rabbitmq:
+                host: rabbitmq.dev.sina-shangke.com
+                port: 5672
+                username: shangke
+                password: Shangke098^&*
+#                virtual-host: /
+#                vhost: /
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/
+  instance:
+    lease-renewal-interval-in-seconds: 2      #设置心跳时间间隔，默认30秒
+    lease-expiration-duration-in-seconds: 5   # 过期时间，如果90秒内未收到心跳，则剔除该服务
+    instance-id: receive-8802.com                # 在信息列表时显示主机名称
+    prefer-ip-address: true                   # 访问的路径变为IP地址e
+
+
+management:
+  health:
+    rabbit:
+      enabled: false
