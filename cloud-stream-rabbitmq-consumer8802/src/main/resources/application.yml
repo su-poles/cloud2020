@@ -11,6 +11,8 @@ spring:
           destination: studyExchange   # 定一个交换机名称，即MQ的Exchange
           content-type: application/json  #设置消息类型，本次为json, 文本则设置为"text/plain"
           binder: dev_rabbit           # 指定是哪个一个binder，即上面定义的dev_rabbit
+          # group能进行消费者分组，组内的消费者轮询消费。 而且group分组以后，消息是可以持久化的。即生产者生产消息是，消费者处于关机状态，等消费者启动之后也可以消费到相关消息，没有group属性则不能实现此功能
+          group: groupA
 
       # 定义一个binder名称，在bingdings中要引用
       binders:

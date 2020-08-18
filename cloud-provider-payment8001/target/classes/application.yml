@@ -19,6 +19,15 @@ spring:
     druid:
       connection-init-sqls: set names utf8mb4
 
+  # 监控的数据要注册到9411上，提前执行：java -jar zipkin-server-x.x.x-exec.jar, 可以访问：http://localhost:9411查看监控页面
+  zipkin:
+    # 指定监控页面
+    base-url: http://localhost:9411
+    sleuth:
+      sampler:
+        #采样率，介于0到1之前，1表示所有数据都采用，速度慢，准确度高，下面取1只是为了学习演示
+        probability: 1
+
 eureka:
   client:
     # true表示向注册中心注册自己

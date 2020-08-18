@@ -95,4 +95,11 @@ public class PaymentController {
         return "业务处理时间为3秒，port=" + serverPort;
     }
 
+
+    //为了观察sleuth有关的调用链路，增加一个接口，用来查看效果，效果在http://localhost:9411里查看
+    @GetMapping("/payment/zipkin")
+    public String paymentZipKin(){
+        return "************************这里是zipkin调用接口";
+    }
+
 }

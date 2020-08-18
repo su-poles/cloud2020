@@ -12,6 +12,13 @@
     <artifactId>cloud-consumer-order80</artifactId>
 
     <dependencies>
+
+        <!--引入sleuth + zipkin -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
+
         <!-- 引入Eureka Server-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
