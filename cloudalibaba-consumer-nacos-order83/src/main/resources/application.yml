@@ -1,0 +1,19 @@
+server:
+  port: 83
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  application:
+    name: nacos-order-consumer
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+#消费者要访问的服务名称，nacos-payment-provider即为服务名，通过服务名+ribbon可以实现负载均衡，nacos-discovery包中自带ribbon
+server-url:
+  nacos-user-service: http://nacos-payment-provider

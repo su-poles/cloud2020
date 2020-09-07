@@ -1,0 +1,23 @@
+# bootstrap.yml加载优先级高于application.yml, 我们会把共性的配置文件放在注册中心，然后在bootstrap.yml指定注册中心的位置
+# 相当于bootstrap.yml的部分内容放在了注册中心
+# application.yml是用户级别的配置文件，一般放经常会改动的东西，比如说环境变量等
+server:
+  port: 3377
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848   # 服务注册与发现
+      config:
+        server-addr: 127.0.0.1:8848   # 配置中心
+        file-extension: yml           # 指定配置文件扩展名, 在nacos中配置时，也要指定后缀名，比如：nacos-config-client-dev.yml
+        group: DEV_GROUP
+#        namespace: 3e4374a2-f693-49cd-807c-18fa734b355b  # dev
+#        namespace: 997b5541-c931-4658-9e62-2bce8b5e6ca6  # test
+        namespace: a5d5bd77-8b10-4909-894e-0609fa18480e  # prod
+
+  application:
+    name: nacos-config-client
+
+# {spring.application.name}-{spring.profile.active}.${spring.cloud.nacos.config.file-extension}

@@ -7,12 +7,14 @@ spring:
   cloud:
     nacos:
       discovery:
-        # nacos地址，从官网下载nacos，解压，然后进入bin目录启动
+      # nacos地址，从官网下载nacos，解压，然后进入bin目录启动
         # 启动命令：
                   # 单机版：sh startup.sh -m standalone
                   # 集群版：sh startup.sh
         # 启动后直接访问：http://localhost:8848/nacos    # nacos必须加
-        server-addr: 127.0.0.1:8848   # nacos地址
+#        server-addr: 127.0.0.1:8848   # nacos地址
+        # nacos配置成集群之后，将地址配置成为集群地址
+        server-addr: nacos.com:80
 
 management:
   endpoints:
