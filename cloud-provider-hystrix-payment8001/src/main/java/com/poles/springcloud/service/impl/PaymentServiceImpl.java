@@ -79,7 +79,7 @@ public class PaymentServiceImpl implements PaymentService {
      *
      * 当请求URL1：http://localhost:8001/payment/circuit/1 时，正常响应
      * 当请求URL2：http://localhost:8001/payment/circuit/-1 时，进入降级方法
-     * 当段时间多次URL2（符合熔断器的条件，即10秒内有10次请求中6此时失败的）时，触发熔断器，此时访问URL1也不能正常响应，此时熔断器处于半开状态（half-open）
+     * 当段时间多次URL2（符合熔断器的条件，即10秒内有10次请求中6次失败的）时，触发熔断器，此时访问URL1也不能正常响应，此时熔断器处于半开状态（half-open）
      * 当过了一会儿（默认5秒）有不满熔断器的条件时，熔断器会尝试恢复调用链路，即释放部分请求，如果还是满足熔断器的条件，则重新回归第前一步，如果不满足熔断条件，则恢复正常的调用链路。
      *
      *
